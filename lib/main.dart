@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -64,6 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  final assetsAudioPlayer = AssetsAudioPlayer();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,23 +77,49 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             ListTile(
               title: Text('Programação'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
+              // onTap: () {
+              //   // Update the state of the app.
+              //   // ...
+              // },
             ),
             ListTile(
               title: Text('Horóscopo'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
+              // onTap: () {
+              //   // Update the state of the app.
+              //   // ...
+              // },
             ),
           ],
         ),
       ),
       appBar: AppBar(
+        // centerTitle: true,
         title: Text(widget.title),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: InkWell(
+                child: Icon(Icons.play_arrow),
+                onTap: () async {
+                  try {
+                    await assetsAudioPlayer.open(
+                      Audio.liveStream("http://80.84.57.76:34991/;stream.mp3"),
+                    );
+                  } catch (t) {
+                    //stream unreachable
+                  }
+                }),
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: InkWell(
+              child: Icon(Icons.stop),
+              onTap: () {
+                assetsAudioPlayer.stop();
+              },
+            ),
+          )
+        ],
       ),
       // body: Center(
       //   child: Column(

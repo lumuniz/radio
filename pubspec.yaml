@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  assets_audio_player: ^2.0.2+2
   flutter:
     sdk: flutter
 

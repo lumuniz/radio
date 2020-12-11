@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: () async {
                   try {
                     await assetsAudioPlayer.open(
-                      Audio.liveStream("http://80.84.57.76:34991/;stream.mp3"),
+                      Audio.liveStream("http://198.7.58.248:11845/;stream.mp3"),
                     );
                   } catch (t) {
                     //stream unreachable
@@ -107,11 +107,15 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/radio.jpeg"),
-            fit: BoxFit.cover,
+      body: Center(
+        child: Container(
+          height: 400,
+          width: 200,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/radio.jpeg"),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),

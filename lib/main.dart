@@ -1,6 +1,5 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
-import 'package:radio/webcan.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +13,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Radio Nossa Terra',
         theme: ThemeData.dark(),
-        home: WebcamPage());
+        home: MyHomePage(title: 'Radio Nossa Terra'));
   }
 }
 

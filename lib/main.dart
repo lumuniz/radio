@@ -1,5 +1,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_framework/responsive_wrapper.dart';
+import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'package:slide_digital_clock/slide_digital_clock.dart';
 
 void main() {
@@ -11,18 +13,51 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        builder: (context, widget) => ResponsiveWrapper.builder(
+                BouncingScrollWrapper.builder(context, widget),
+                maxWidth: 1920,
+                minWidth: 600,
+                defaultScale: true,
+                breakpoints: [
+                  ResponsiveBreakpoint.autoScale(
+                    450,
+                    name: MOBILE,
+                    scaleFactor: .35,
+                  ),
+                  ResponsiveBreakpoint.autoScale(
+                    600,
+                    name: TABLET,
+                    scaleFactor: .45,
+                  ),
+                  ResponsiveBreakpoint.autoScale(
+                    800,
+                    name: TABLET,
+                    scaleFactor: .65,
+                  ),
+                  ResponsiveBreakpoint.autoScale(
+                    1000,
+                    name: TABLET,
+                    scaleFactor: .75,
+                  ),
+                  ResponsiveBreakpoint.autoScale(
+                    1200,
+                    name: DESKTOP,
+                    scaleFactor: .85,
+                  ),
+                  ResponsiveBreakpoint.autoScale(
+                    2460,
+                    name: "4K",
+                    scaleFactor: .9,
+                  ),
+                ]),
         debugShowCheckedModeBanner: false,
-        title: 'Radio Nossa Terra',
+        title: 'Rádio Nossa Terra',
         theme: ThemeData.dark(),
-        home: MyHomePage(title: 'Radio Nossa Terra'));
+        home: MyHomePage());
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -33,13 +68,13 @@ class _MyHomePageState extends State<MyHomePage> {
   var iconPlay = Icon(
     Icons.play_arrow,
     size: 80,
-    color: Colors.black,
+    color: Colors.grey[850],
   );
 
   var iconPause = Icon(
     Icons.pause,
     size: 80,
-    color: Colors.black,
+    color: Colors.grey[850],
   );
 
   @override
@@ -58,10 +93,14 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Container(
         width: size.width,
         height: size.height,
-        color: Colors.grey[500],
+        color: Colors.grey[400],
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset('assets/images/morros_linha.png'),
+            SizedBox(
+              height: 50,
+            ),
             Text(
               'RÁDIO NOSSA TERRA 105,9FM',
               style: TextStyle(
@@ -105,37 +144,45 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             SizedBox(
-              height: 50,
+              height: 40,
             ),
-            Container(
-              height: 200,
-              width: 350,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle, color: Colors.grey[700]),
-              child: Center(
-                child: InkWell(
-                    onTap: () async {
-                      try {
-                        await assetsAudioPlayer.open(
-                          Audio.liveStream(
-                              "http://198.7.58.248:11845/;stream.mp3"),
-                        );
-                        setState(() {
-                          if (icon == iconPlay) {
-                            assetsAudioPlayer.play();
-                            icon = iconPause;
-                          } else {
-                            assetsAudioPlayer.pause();
-                            icon = iconPlay;
-                          }
-                        });
-                      } catch (t) {
-                        //stream unreachable
-                      }
-                    },
-                    child: icon),
-              ),
-            )
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  height: 250,
+                  width: 400,
+                  child: Image.asset('assets/images/radio_volume.png'),
+                ),
+                InkWell(
+                  child: icon,
+                  onTap: () async {
+                    try {
+                      await assetsAudioPlayer.open(
+                        Audio.liveStream(
+                            "http://198.7.58.248:11845/;stream.mp3"),
+                      );
+                      setState(() {
+                        if (icon == iconPlay) {
+                          assetsAudioPlayer.play();
+                          icon = iconPause;
+                        } else {
+                          assetsAudioPlayer.pause();
+                          icon = iconPlay;
+                        }
+                      });
+                    } catch (t) {
+                      //stream unreachable
+                    }
+                  },
+                ),
+              ],
+            ),
+            Icon(
+              Icons.menu,
+              color: Colors.grey[850],
+              size: 50,
+            ),
           ],
         ),
       ),

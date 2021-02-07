@@ -22,6 +22,7 @@ environment:
 
 dependencies:
   assets_audio_player: ^2.0.2+2
+  slide_digital_clock: ^1.0.0
   flutter:
     sdk: flutter
 

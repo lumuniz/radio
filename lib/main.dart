@@ -1,5 +1,6 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:slide_digital_clock/slide_digital_clock.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,15 +21,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -36,88 +28,117 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  Icon icon;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  var iconPlay = Icon(
+    Icons.play_arrow,
+    size: 80,
+    color: Colors.black,
+  );
+
+  var iconPause = Icon(
+    Icons.pause,
+    size: 80,
+    color: Colors.black,
+  );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    icon = iconPlay;
+    super.initState();
   }
 
   final assetsAudioPlayer = AssetsAudioPlayer();
-
+  Size get size => MediaQuery.of(context).size;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.black,
-      drawer: Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            ListTile(
-              title: Text('Programação'),
-              // onTap: () {
-              //   // Update the state of the app.
-              //   // ...
-              // },
+        body: SafeArea(
+      child: Container(
+        width: size.width,
+        height: size.height,
+        color: Colors.grey[500],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'RÁDIO NOSSA TERRA 105,9FM',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20),
             ),
-            ListTile(
-              title: Text('Horóscopo'),
-              // onTap: () {
-              //   // Update the state of the app.
-              //   // ...
-              // },
+            SizedBox(
+              height: 5,
             ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.black,
+              ),
+              width: 280,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.alarm),
+                    DigitalClock(
+                      areaWidth: 200,
+                      showSecondsDigit: false,
+                      is24HourTimeFormat: false,
+                      areaDecoration: BoxDecoration(
+                        color: Colors.transparent,
+                      ),
+                      hourMinuteDigitTextStyle: TextStyle(
+                          color: Colors.green,
+                          fontSize: 50,
+                          fontWeight: FontWeight.w300),
+                      amPmDigitTextStyle: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                      hourMinuteDigitDecoration: BoxDecoration(
+                          border: Border.all(color: Colors.transparent)),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Container(
+              height: 200,
+              width: 350,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle, color: Colors.grey[700]),
+              child: Center(
+                child: InkWell(
+                    onTap: () async {
+                      try {
+                        await assetsAudioPlayer.open(
+                          Audio.liveStream(
+                              "http://198.7.58.248:11845/;stream.mp3"),
+                        );
+                        setState(() {
+                          if (icon == iconPlay) {
+                            assetsAudioPlayer.play();
+                            icon = iconPause;
+                          } else {
+                            assetsAudioPlayer.pause();
+                            icon = iconPlay;
+                          }
+                        });
+                      } catch (t) {
+                        //stream unreachable
+                      }
+                    },
+                    child: icon),
+              ),
+            )
           ],
         ),
       ),
-      appBar: AppBar(
-        // centerTitle: true,
-        title: Text(widget.title),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: InkWell(
-                child: Icon(Icons.play_arrow),
-                onTap: () async {
-                  try {
-                    await assetsAudioPlayer.open(
-                      Audio.liveStream("http://198.7.58.248:11845/;stream.mp3"),
-                    );
-                  } catch (t) {
-                    //stream unreachable
-                  }
-                }),
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: InkWell(
-              child: Icon(Icons.stop),
-              onTap: () {
-                assetsAudioPlayer.stop();
-              },
-            ),
-          )
-        ],
-      ),
-      body: Center(
-        child: Container(
-          height: 400,
-          width: 200,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/radio.jpeg"),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
-    );
+    ));
   }
 }

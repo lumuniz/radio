@@ -1,7 +1,5 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_framework/responsive_wrapper.dart';
-import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'package:slide_digital_clock/slide_digital_clock.dart';
 
 void main() {
@@ -13,43 +11,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        builder: (context, widget) => ResponsiveWrapper.builder(
-                BouncingScrollWrapper.builder(context, widget),
-                maxWidth: 1920,
-                minWidth: 600,
-                defaultScale: true,
-                breakpoints: [
-                  ResponsiveBreakpoint.autoScale(
-                    450,
-                    name: MOBILE,
-                    scaleFactor: .35,
-                  ),
-                  ResponsiveBreakpoint.autoScale(
-                    600,
-                    name: TABLET,
-                    scaleFactor: .45,
-                  ),
-                  ResponsiveBreakpoint.autoScale(
-                    800,
-                    name: TABLET,
-                    scaleFactor: .65,
-                  ),
-                  ResponsiveBreakpoint.autoScale(
-                    1000,
-                    name: TABLET,
-                    scaleFactor: .75,
-                  ),
-                  ResponsiveBreakpoint.autoScale(
-                    1200,
-                    name: DESKTOP,
-                    scaleFactor: .85,
-                  ),
-                  ResponsiveBreakpoint.autoScale(
-                    2460,
-                    name: "4K",
-                    scaleFactor: .9,
-                  ),
-                ]),
         debugShowCheckedModeBanner: false,
         title: 'Rádio Nossa Terra',
         theme: ThemeData.dark(),
@@ -63,15 +24,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Icon icon;
+  var icon;
 
-  var iconPlay = Icon(
+  Icon iconPlay = Icon(
     Icons.play_arrow,
     size: 80,
     color: Colors.grey[850],
   );
 
-  var iconPause = Icon(
+  Icon iconPause = Icon(
     Icons.pause,
     size: 80,
     color: Colors.grey[850],
@@ -79,7 +40,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     icon = iconPlay;
     super.initState();
   }
@@ -101,12 +61,14 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               height: 50,
             ),
-            Text(
-              'RÁDIO NOSSA TERRA 105,9FM',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20),
+            Container(
+              child: Text(
+                'RÁDIO NOSSA TERRA 105,9FM',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17),
+              ),
             ),
             SizedBox(
               height: 5,
